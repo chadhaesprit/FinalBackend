@@ -1,27 +1,29 @@
 version: '3'
 services:
-  db:
+  devops-db:
     image: mysql:latest
-    environment:
-        MYSQL_ROOT_PASSWORD: 123
-        MYSQL_DATABASE: MyDB
-        MYSQL_USER: chadha
-        MYSQL_PASSWORD: 123
+    container_name: devops-db
     ports:
       - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: MyDB
+    volumes:
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
     networks:
       - mon_reseau
+    restart: always
 
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
     depends_on:
-      - db
+      - mysql-db
     networks:
       - mon_reseau
     ports:
-      - "8083:8083"
+      - "8082:8082"
     environment:
-        SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/MyDB?useSSL=false
+        SPRING_DATASOURCE_URL: jdbc:mysql://devops-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
         SPRING_DATASOURCE_USERNAME: chadha
         SPRING_DATASOURCE_PASSWORD: 123
 
@@ -54,6 +56,8 @@ services:
     image: chadha122/angulardevops:tag  # Assurez-vous que l'image correcte est disponible sur Docker Hub
     ports:
       - "80:80"  # Vous pouvez mapper le port 80 du conteneur au port 80 de l'hôte
+    depends_on:
+      - front-end
     networks:
       - mon_reseau
 
