@@ -57,7 +57,7 @@ services:
     ports:
       - "80:80"  # Vous pouvez mapper le port 80 du conteneur au port 80 de l'hôte
     depends_on:
-      - front-end
+      - springboot-app
     networks:
       - mon_reseau
 
