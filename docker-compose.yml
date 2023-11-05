@@ -1,0 +1,64 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:8.0.32
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: devopsback
+    networks:
+      - mon_reseau
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  springboot-app:
+    image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
+    depends_on:
+      - mysqldb
+    networks:
+      - mon_reseau
+    ports:
+      - "8083:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/devopsback
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    networks:
+      - mon_reseau
+    depends_on:
+      - springboot-app
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    networks:
+      - mon_reseau
+    depends_on:
+      - prometheus
+
+  front-end:
+    image: chadha122/angulardevops:tag  # Assurez-vous que l'image correcte est disponible sur Docker Hub
+    ports:
+      - "80:80"  # Vous pouvez mapper le port 80 du conteneur au port 80 de l'hôte
+    networks:
+      - mon_reseau
+
+networks:
+  mon_reseau:
+    driver: bridge
+
+volumes:
+  mysql_data:

@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'spring-actuator-distant'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['192.168.56.7:8083']
