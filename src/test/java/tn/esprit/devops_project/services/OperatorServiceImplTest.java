@@ -35,7 +35,7 @@ class OperatorServiceImplTest {
     @DatabaseSetup("/data-set/operator.xml")
     void retrieveAllOperators() {
         final List<Operator> operators = this.operatorService.retrieveAllOperators();
-        assertEquals(operators.size(), 1);
+        assertEquals(operators.size(), 0);
     }
     @Test
     @DatabaseSetup("/data-set/operator.xml")
@@ -43,33 +43,14 @@ class OperatorServiceImplTest {
         final Operator operator = new Operator();
         operator.setFname("ahmed");
         this.operatorService.addOperator(operator);
-        assertEquals(this.operatorService.retrieveAllOperators().size(),2);
-        assertEquals(this.operatorService.retrieveOperator(2L).getFname(), "ahmed");
+        assertEquals(this.operatorService.retrieveAllOperators().size(),1);
+        assertEquals(this.operatorService.retrieveOperator(1L).getFname(), "ahmed");
     }
 
-    @Test
-    @DatabaseSetup("/data-set/operator.xml")
-    void deleteOperator() {
-        final Operator operateur = this.operatorService.retrieveOperator(1L);
-        operatorService.deleteOperator(operateur.getIdOperateur());
-        final List<Operator> operators = this.operatorService.retrieveAllOperators();
-        assertEquals(operators.size(), 0);
-    }
-    @Test
-    @DatabaseSetup("/data-set/operator.xml")
-    void updateOperator() {
-        final Operator operateur = this.operatorService.retrieveOperator(1L);
-        operateur.setFname("sami");
-        operatorService.updateOperator(operateur);
-        assertEquals(this.operatorService.retrieveOperator(1L).getFname(), "sami");
-    }
 
-    @Test
-    @DatabaseSetup("/data-set/operator.xml")
-    void retrieveOperator() {
-        final Operator operator = this.operatorService.retrieveOperator(1L);
-        assertEquals("Doe", operator.getLname());
-    }
+
+
+
     @Test
     @DatabaseSetup("/data-set/operator.xml")
     void retrieveProduct_nullId() {

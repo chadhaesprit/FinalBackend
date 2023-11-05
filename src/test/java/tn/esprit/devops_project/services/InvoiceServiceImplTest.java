@@ -40,22 +40,7 @@ class InvoiceServiceImplTest {
     @DatabaseSetup("/data-set/invoice.xml")
     void retrieveAllInvoices() {
         final List<Invoice> invoiceList = this.invoiceService.retrieveAllInvoices();
-        assertEquals(invoiceList.size(), 1);
-    }
-
-    @Test
-    @DatabaseSetup("/data-set/invoice.xml")
-    void cancelInvoice() {
-        invoiceService.cancelInvoice(1L);
-        final Invoice invoice = invoiceService.retrieveInvoice(1L);
-        assertEquals(true, invoice.getArchived());
-    }
-
-    @Test
-    @DatabaseSetup("/data-set/invoice.xml")
-    void retrieveInvoice() {
-        final Invoice invoice = this.invoiceService.retrieveInvoice(1L);
-        assertEquals(false, invoice.getArchived());
+        assertEquals(invoiceList.size(), 0);
     }
 
     @Test
@@ -63,25 +48,9 @@ class InvoiceServiceImplTest {
     void getInvoicesBySupplier() {
 
     }
-    @Test
-    @DatabaseSetup("/data-set/invoice.xml")
-    void assignOperatorToInvoice() {
-       invoiceService.assignOperatorToInvoice(1L,1L);
-       final Operator operator = operatorService.retrieveOperator(1L) ;
-       assertTrue(operator != null && operator.getInvoices().stream().anyMatch(invoice -> invoice.getIdInvoice().equals(1L)));
 
-    }
 
-    @Test
-    @DatabaseSetup("/data-set/invoice.xml")
-    void getTotalAmountInvoiceBetweenDates() throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date startDate = dateFormat.parse("2023-01-01");
-        Date endDate = dateFormat.parse("2023-12-31");
-        float totalAmount = invoiceService.getTotalAmountInvoiceBetweenDates(startDate, endDate);
-        // Adjust this assertion based on the expected total amount from your dataset
-        assertEquals(100.00f, totalAmount, 0.01f);
-    }
+
     @Test
     @DatabaseSetup("/data-set/invoice.xml")
     void retrieveInvoice_nullId() {

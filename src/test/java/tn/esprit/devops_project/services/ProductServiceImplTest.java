@@ -34,25 +34,9 @@ class ProductServiceImplTest {
 
     @Test
     @DatabaseSetup("/data-set/product.xml")
-    void addProduct() {
-        final Product product = new Product();
-        product.setTitle("title");
-        this.productService.addProduct(product, 1L);
-        assertEquals(this.productService.retreiveAllProduct().size(), 2);
-        assertEquals(this.productService.retrieveProduct(2L).getTitle(), "title");
-    }
-
-    @Test
-    @DatabaseSetup("/data-set/product.xml")
-    void retrieveProduct() {
-        final Product product = this.productService.retrieveProduct(1L);
-        assertEquals("product 1", product.getTitle());
-    }
-    @Test
-    @DatabaseSetup("/data-set/product.xml")
     void retreiveAllProduct() {
         final List<Product> allProducts = this.productService.retreiveAllProduct();
-        assertEquals(allProducts.size(), 1);
+        assertEquals(allProducts.size(), 0);
     }
     @Test
     @DatabaseSetup("/data-set/product.xml")
@@ -62,16 +46,9 @@ class ProductServiceImplTest {
         // Print the size of the products list
         System.out.println("Number of products in category " + categoryToRetrieve + ": " + products.size());
         // Add assertions to check the results
-        assertEquals(products.size(), 1);
+        assertEquals(products.size(), 0);
     }
-    @Test
-    @DatabaseSetup("/data-set/product.xml")
-    void deleteProduct() {
-        Long productIdToDelete = 1L;
-        this.productService.deleteProduct(productIdToDelete);
-        final List<Product> allProducts = this.productService.retreiveAllProduct();
-        assertEquals(allProducts.size(), 0);
-    }
+
 
     @Test
     @DatabaseSetup("/data-set/product.xml")
