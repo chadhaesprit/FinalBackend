@@ -9,6 +9,8 @@ services:
         MYSQL_PASSWORD: 123
     ports:
       - "3306:3306"
+    networks:
+      - mon_reseau
 
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
