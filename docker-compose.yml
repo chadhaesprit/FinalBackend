@@ -61,7 +61,7 @@ services:
     ports:
       - "9113:9113"
     depends_on:
-    - frontend  # Depend on the frontend service
+    - front-end  # Depend on the frontend service
     networks:
      - mon_reseau
 networks:
