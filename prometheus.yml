@@ -1,8 +1,22 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'my-monitor'
+
+rule_files:
+  - ./alertmanager/alert.rules
 
 scrape_configs:
-  - job_name: 'spring-actuator-distant'
-    metrics_path: '/actuator/prometheus'
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['192.168.56.7:9090']
+
+  - job_name: 'nginx-exporter'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['192.168.56.17:9113']
+
+  - job_name: 'backend'
+    metrics_path: /actuator/prometheus
     static_configs:
       - targets: ['192.168.56.7:8083']

@@ -1,29 +1,28 @@
 version: '3'
 services:
-  mysqldb:
-    image: mysql:8.0.32
+  db:
+    image: mysql:latest
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: devopsback
-    networks:
-      - mon_reseau
+        MYSQL_ROOT_PASSWORD: 123
+        MYSQL_DATABASE: MyDB
+        MYSQL_USER: chadha
+        MYSQL_PASSWORD: 123
     ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+      - "3306:3306"
 
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
     depends_on:
-      - mysqldb
+      - db
     networks:
       - mon_reseau
     ports:
-      - "8083:8082"
+      - "8083:8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/devopsback
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ""
+        SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/MyDB?useSSL=false
+        SPRING_DATASOURCE_USERNAME: chadha
+        SPRING_DATASOURCE_PASSWORD: 123
+
 
   prometheus:
     image: prom/prometheus
@@ -56,6 +55,15 @@ services:
     networks:
       - mon_reseau
 
+  nginx-exporter:
+    image: "nginx/nginx-prometheus-exporter:latest"
+    command: ["-nginx.scrape-uri=http://frontend:80/metrics"]  # Adjust this command
+    ports:
+      - "9113:9113"
+    depends_on:
+    - frontend  # Depend on the frontend service
+    networks:
+     - mon_reseau
 networks:
   mon_reseau:
     driver: bridge
