@@ -17,7 +17,7 @@ services:
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
     depends_on:
-      - mysql-db
+      - devops-db
     networks:
       - mon_reseau
     ports:
