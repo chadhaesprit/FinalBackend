@@ -1,8 +1,8 @@
 version: '3'
 services:
-  devops-db:
+  devops-db-project:
     image: mysql:latest
-    container_name: devops-db
+    container_name: devops-db-project
     ports:
       - "3306:3306"
     environment:
@@ -17,7 +17,7 @@ services:
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
     depends_on:
-      - devops-db
+      - devops-db-project
     networks:
       - mon_reseau
     ports:
@@ -63,7 +63,7 @@ services:
 
   nginx-exporter:
     image: "nginx/nginx-prometheus-exporter:latest"
-    command: ["-nginx.scrape-uri=http://frontend:80/metrics"]  # Adjust this command
+    command: ["-nginx.scrape-uri=http://192.168.56.7:80/metrics"]  # Adjust this command
     ports:
       - "9113:9113"
     depends_on:
