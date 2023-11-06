@@ -6,8 +6,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: MyDB
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: "MyDB"
+      MYSQL_USER: "chadha"
+      MYSQL_PASSWORD: "123"
     volumes:
       - ./data.sql:/docker-entrypoint-initdb.d/data.sql
     networks:
