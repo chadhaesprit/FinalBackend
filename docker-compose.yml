@@ -6,10 +6,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "123"
-      MYSQL_DATABASE: "MyDB"
-      MYSQL_USER: "chadha"
-      MYSQL_PASSWORD: "123"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: MyDB
     volumes:
       - ./data.sql:/docker-entrypoint-initdb.d/data.sql
     networks:
@@ -25,9 +23,9 @@ services:
     ports:
       - "8082:8082"
     environment:
-        SPRING_DATASOURCE_URL: jdbc:mysql://devops-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-        SPRING_DATASOURCE_USERNAME: chadha
-        SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_DATASOURCE_URL: jdbc:mysql://devops-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
 
 
   prometheus:
