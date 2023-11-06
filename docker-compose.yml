@@ -40,6 +40,7 @@ services:
       - mon_reseau
     depends_on:
       - springboot-app
+      - front-end
 
   grafana:
     image: grafana/grafana
@@ -63,13 +64,12 @@ services:
 
   nginx-exporter:
     image: "nginx/nginx-prometheus-exporter:latest"
-    command: ["-nginx.scrape-uri=http://192.168.56.7:80/metrics"]  # Adjust this command
+    command: [ "-nginx.scrape-uri=http://front-end:80/metrics" ]
     ports:
       - "9113:9113"
-    depends_on:
-    - front-end  # Depend on the frontend service
     networks:
      - mon_reseau
+
 networks:
   mon_reseau:
     driver: bridge
