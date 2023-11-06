@@ -27,21 +27,23 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
 
-
   prometheus:
-    image: prom/prometheus:latest
-    privileged: true
+    image: prom/prometheus
+    container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
-      - '9090:9090'
+      - "9090:9090"
     networks:
       - mon_reseau
+    depends_on:
+      - springboot-app
 
   grafana:
     image: grafana/grafana
+    container_name: grafana
     ports:
       - "3000:3000"
     environment:
@@ -50,6 +52,9 @@ services:
       - mon_reseau
     depends_on:
       - prometheus
+    volumes: # Créez un volume pour Grafana
+      - grafana_data:/var/lib/grafana
+
 
   front-end:
     image: chadha122/angulardevops:tag  # Assurez-vous que l'image correcte est disponible sur Docker Hub
@@ -65,8 +70,11 @@ services:
     command: ["-nginx.scrape-uri=http://front-end:80/metrics"]
     ports:
       - "9113:9113"
+    depends_on:
+     - front-end
     networks:
      - mon_reseau
+
 
 networks:
   mon_reseau:
