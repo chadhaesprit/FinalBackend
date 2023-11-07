@@ -47,6 +47,21 @@ class SupplierServiceImplTest {
     }
 
 
+    @Test
+    @DatabaseSetup("/data-set/supplier-data.xml")
+    void updateSupplier() {
+        Supplier supplier = this.supplierService.retrieveSupplier(2L);
+        supplier.setLabel("New Supplier Label");
+        this.supplierService.updateSupplier(supplier);
+        assertEquals(this.supplierService.retrieveSupplier(2L).getLabel(), "New Supplier Label");
+    }
+
+    @Test
+    @DatabaseSetup("/data-set/supplier-data.xml")
+    void deleteSupplier() {
+        Supplier supplier = this.supplierService.retrieveSupplier(2L);
+        this.supplierService.deleteSupplier(supplier.getIdSupplier());
+    }
 
 
 

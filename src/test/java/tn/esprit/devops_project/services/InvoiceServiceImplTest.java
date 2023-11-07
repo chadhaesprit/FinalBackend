@@ -44,10 +44,36 @@ class InvoiceServiceImplTest {
     }
 
     @Test
-    @DatabaseSetup("/data-set/invoice.xml")
-    void getInvoicesBySupplier() {
-
+    @DatabaseSetup("/data-set/invoice-data.xml")
+    void cancelInvoice() {
+        Long invoiceId = 3L; // Remplacez par un ID existant dans vos données de test
+        invoiceService.cancelInvoice(invoiceId);
+        // Vérifiez que l'invoice a été correctement annulée
     }
+
+    @Test
+    @DatabaseSetup("/data-set/invoice-data.xml")
+    void getTotalAmountInvoiceBetweenDates() {
+        // Date de début et de fin appropriées en fonction des données du jeu de données
+        Date startDate = getDate("2023-01-01");
+        Date endDate = getDate("2023-01-04");
+
+        float totalAmount = invoiceService.getTotalAmountInvoiceBetweenDates(startDate, endDate);
+
+        // Écrivez des assertions pour vérifier le montant total
+        assertEquals(100.0f, totalAmount, 0.01f); // 150.0f est le montant total attendu
+    }
+
+    private Date getDate(String dateString) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            throw new RuntimeException("Erreur lors de la conversion de la date.", e);
+        }
+    }
+
+
 
 
 
