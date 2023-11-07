@@ -37,19 +37,18 @@ class OperatorServiceImplTest {
         final List<Operator> operators = this.operatorService.retrieveAllOperators();
         assertEquals(operators.size(), 0);
     }
-
-
-
-
     @Test
-    @DatabaseSetup("/data-set/operator-data.xml")
+    @DatabaseSetup("/data-set/operator.xml")
     void addOperator() {
-        Operator operator = new Operator();
-        // Initialisez les propriétés de l'opérateur pour les besoins du test
-
-        Operator addedOperator = operatorService.addOperator(operator);
-
+        final Operator operator = new Operator();
+        operator.setFname("ahmed");
+        this.operatorService.addOperator(operator);
+        assertEquals(this.operatorService.retrieveAllOperators().size(),1);
+        assertEquals(this.operatorService.retrieveOperator(1L).getFname(), "ahmed");
     }
+
+
+
 
 
     @Test
