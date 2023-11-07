@@ -10,7 +10,7 @@ scrape_configs:
   - job_name: 'jenkins'
     metrics_path: '/prometheus'
     static_configs:
-      - targets: ['192.168.1.181:8080']
+      - targets: ['192.168.5.7:8080']
 
   - job_name: 'nginx-exporter'
     metrics_path: /metrics
