@@ -1,8 +1,8 @@
 version: '3'
 services:
-  devops-db:
+  devops-project-db:
     image: mysql:latest
-    container_name: devops-db
+    container_name: devops-project-db
     ports:
       - "3306:3306"
     environment:
@@ -15,15 +15,16 @@ services:
     restart: always
 
   springboot-app:
-    image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
+    image: chadha122/backdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
+    container_name: springboot-app
     depends_on:
-      - devops-db
+      - devops-project-db
     networks:
       - mon_reseau
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://devops-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://devops-project-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
 
@@ -43,6 +44,7 @@ services:
 
   grafana:
     image: grafana/grafana
+    container_name: grafana
     ports:
       - "3000:3000"
     environment:
@@ -54,6 +56,7 @@ services:
 
   front-end:
     image: chadha122/angulardevops:tag  # Assurez-vous que l'image correcte est disponible sur Docker Hub
+    container_name: front-end
     ports:
       - "80:80"
     depends_on:
@@ -63,6 +66,7 @@ services:
 
   nginx-exporter:
     image: "nginx/nginx-prometheus-exporter:latest"
+    container_name: nginx-exporter
     command: ["-nginx.scrape-uri=http://front-end:80/metrics"]
     ports:
       - "9113:9113"
