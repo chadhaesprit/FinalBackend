@@ -1,8 +1,8 @@
 version: '3'
 services:
-  devops-db-project:
+  devops-db:
     image: mysql:latest
-    container_name: devops-db-project
+    container_name: devops-db
     ports:
       - "3306:3306"
     environment:
@@ -17,13 +17,13 @@ services:
   springboot-app:
     image: chadha122/springdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
     depends_on:
-      - devops-db-project
+      - devops-db
     networks:
       - mon_reseau
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://devops-db-project:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://devops-db:3306/MyDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
 
