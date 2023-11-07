@@ -52,13 +52,14 @@ services:
       - mon_reseau
     depends_on:
       - prometheus
-    volumes:
+    volumes: # Créez un volume pour Grafana
       - grafana_data:/var/lib/grafana
+
 
   front-end:
     image: chadha122/angulardevops:tag  # Assurez-vous que l'image correcte est disponible sur Docker Hub
     ports:
-      - "80:80"
+      - "80:80"  # Vous pouvez mapper le port 80 du conteneur au port 80 de l'hôte
     depends_on:
       - springboot-app
     networks:
@@ -70,13 +71,14 @@ services:
     ports:
       - "9113:9113"
     depends_on:
-      - front-end
+     - front-end
     networks:
-      - mon_reseau
+     - mon_reseau
+
 
 networks:
   mon_reseau:
     driver: bridge
 
 volumes:
-  grafana_data: # Define the volume for Grafana data
+  mysql_data:
