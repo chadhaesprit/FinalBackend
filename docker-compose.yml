@@ -15,7 +15,7 @@ services:
     restart: always
 
   springboot-app:
-    image: chadha122/backdevops:tag  # Assurez-vous d'utiliser la bonne version de l'image
+    image: chadha122/backdevops:latest   # Assurez-vous d'utiliser la bonne version de l'image
     container_name: springboot-app
     depends_on:
       - devops-project-db
